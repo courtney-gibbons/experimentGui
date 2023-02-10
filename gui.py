@@ -13,7 +13,7 @@ def confirm_button_click():
     print("Experiment Times:", experiment_times)
 
 root = ctk.CTk()
-root.geometry("600x450")
+root.geometry("600x500")
 root.title("Experiment GUI")
 
 num_experiments_label = ctk.CTkLabel(root, text="How many experiments are you running?", font=("Helvetica", 20))
@@ -26,9 +26,9 @@ num_experiments_var.set(1)
 num_experiments_options = [("1", 1), ("2", 2), ("3", 3), ("4", 4)]
 for text, value in num_experiments_options:
     radioButton = ctk.CTkRadioButton(root, text=text, variable=num_experiments_var, value=value, command=lambda v=value: show_entries(v))
-    radioButton.pack(padx=5, pady=5)
+    radioButton.pack(padx=3, pady=3)
 
-blank_line = tk.Label(root, text="", height=1)
+blank_line = ctk.CTkLabel(root, text="", height=1)
 blank_line.pack()
 
 experiment_time_label = ctk.CTkLabel(root, text="How long is each experiment?", font=("Helvetica", 20))
@@ -47,7 +47,7 @@ def show_entries(value):
         experiment_time_label = ctk.CTkLabel(root, text=f"Experiment {i+1} Time:")
         experiment_time_label.pack()
         experiment_time_labels.append(experiment_time_label)
-        entry = tk.Entry(root)
+        entry = ctk.CTkEntry(root)
         entry.pack()
         experiment_time_entries.append(entry)
 
