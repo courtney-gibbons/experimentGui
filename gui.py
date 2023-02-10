@@ -1,4 +1,8 @@
 import tkinter as tk
+import customtkinter as ctk
+
+ctk.set_appearance_mode("System")
+ctk.set_default_color_theme("blue")
 
 def confirm_button_click():
     num_experiments = int(num_experiments_var.get())
@@ -8,11 +12,11 @@ def confirm_button_click():
     print("Number of Experiments:", num_experiments)
     print("Experiment Times:", experiment_times)
 
-root = tk.Tk()
+root = ctk.CTk()
 root.geometry("600x450")
 root.title("Experiment GUI")
 
-num_experiments_label = tk.Label(root, text="How many experiments are you running?", font=("Helvetica", 20))
+num_experiments_label = ctk.CTkLabel(root, text="How many experiments are you running?", font=("Helvetica", 20))
 num_experiments_label.pack()
 
 
@@ -21,12 +25,13 @@ num_experiments_var.set(1)
 
 num_experiments_options = [("1", 1), ("2", 2), ("3", 3), ("4", 4)]
 for text, value in num_experiments_options:
-    tk.Radiobutton(root, text=text, variable=num_experiments_var, value=value, command=lambda v=value: show_entries(v)).pack()
+    radioButton = ctk.CTkRadioButton(root, text=text, variable=num_experiments_var, value=value, command=lambda v=value: show_entries(v))
+    radioButton.pack(padx=5, pady=5)
 
 blank_line = tk.Label(root, text="", height=1)
 blank_line.pack()
 
-experiment_time_label = tk.Label(root, text="How long is each experiment?", font=("Helvetica", 20))
+experiment_time_label = ctk.CTkLabel(root, text="How long is each experiment?", font=("Helvetica", 20))
 experiment_time_label.pack()
 
 experiment_time_entries = []
@@ -39,7 +44,7 @@ def show_entries(value):
         entry.pack_forget()
     experiment_time_entries.clear()
     for i in range(value):
-        experiment_time_label = tk.Label(root, text=f"Experiment {i+1} Time:")
+        experiment_time_label = ctk.CTkLabel(root, text=f"Experiment {i+1} Time:")
         experiment_time_label.pack()
         experiment_time_labels.append(experiment_time_label)
         entry = tk.Entry(root)
@@ -49,7 +54,7 @@ def show_entries(value):
 experiment_time_labels = []
 show_entries(num_experiments_var.get())
 
-confirm_button = tk.Button(root, text="Confirm", command=confirm_button_click)
+confirm_button = ctk.CTkButton(root, text="Confirm", command=confirm_button_click)
 confirm_button.pack(side="bottom", fill="x")
 
 root.mainloop()
