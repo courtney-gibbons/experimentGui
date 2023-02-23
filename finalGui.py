@@ -10,6 +10,7 @@ def start_button_click():
         experiment_times[i] = int(experiment_time_entries[i].get())
         experiment_bs[i] = int(experiment_b_entries[i].get())
         experiment_freqs[i] = int(experiment_freq_entries[i].get())
+    print("Start Experiments")
     print("Number of Experiments:", num_experiments)
     print("Experiment Times:", experiment_times)
     print("Experiment Magnetic Fields:", experiment_bs)
@@ -17,12 +18,17 @@ def start_button_click():
 
 def abort_button_click():
     experiment_aborted.set(1)
+    print("Abort Experiments")
 
 root = tk.Tk()
-root.geometry("600x450")
+root.geometry("1000x400")
 root.title("Experiment GUI")
 
-num_experiments_label = tk.Label(root, text="How many experiments are you running?", font=("Helvetica", 20))
+# Create a frame for the first column
+frame1 = tk.Frame(root)
+frame1.pack(side="left")
+
+num_experiments_label = tk.Label(frame1, text="How many experiments?", font=("Helvetica", 20))
 num_experiments_label.pack()
 
 num_experiments_var = tk.IntVar()
@@ -30,19 +36,19 @@ num_experiments_var.set(1)
 
 num_experiments_options = [("1", 1), ("2", 2), ("3", 3), ("4", 4)]
 for text, value in num_experiments_options:
-    tk.Radiobutton(root, text=text, variable=num_experiments_var, value=value, command=lambda v=value: show_entries(v)).pack()
+    tk.Radiobutton(frame1, text=text, variable=num_experiments_var, value=value, command=lambda v=value: show_entries(v)).pack()
 
-blank_line = tk.Label(root, text="", height=1)
-blank_line.pack()
-
-experiment_label = tk.Label(root, text="Experiment Information", font=("Helvetica", 20))
-experiment_label.pack()
+#blank_line = tk.Label(root, text="", height=1)
+#blank_line.pack()
 
 experiment_time_entries = []
 experiment_b_entries = []
 experiment_freq_entries = []
 
 def show_entries(value):
+    for frame in frames:
+        frame.destroy()
+
     for label in experiment_labels:
         label.pack_forget()
     experiment_labels.clear()
@@ -69,31 +75,37 @@ def show_entries(value):
     experiment_freq_entries.clear()
 
     for i in range(value):
-        experiment_label = tk.Label(root, text=f"Experiment {i+1}:")
+        # Create a frame for the ith column
+        framei = tk.Frame(root)
+        framei.pack(side="left")
+        frames.append(framei)
+
+        experiment_label = tk.Label(framei, text=f"Experiment {i+1}:", font=("Helvetica", 20))
         experiment_label.pack()
         experiment_labels.append(experiment_label)
 
-        experiment_time_label = tk.Label(root, text=f"Time (min):")
+        experiment_time_label = tk.Label(framei, text=f"Time (min):")
         experiment_time_label.pack()
         experiment_time_labels.append(experiment_time_label)
-        entry = tk.Entry(root)
+        entry = tk.Entry(framei)
         entry.pack()
         experiment_time_entries.append(entry)
 
-        experiment_b_label = tk.Label(root, text=f"Magnetic Field (mT):")
+        experiment_b_label = tk.Label(framei, text=f"Magnetic Field (mT):")
         experiment_b_label.pack()
         experiment_b_labels.append(experiment_b_label)
-        entry = tk.Entry(root)
+        entry = tk.Entry(framei)
         entry.pack()
         experiment_b_entries.append(entry)
 
-        experiment_freq_label = tk.Label(root, text=f"Frequency (Hz):")
+        experiment_freq_label = tk.Label(framei, text=f"Frequency (Hz):")
         experiment_freq_label.pack()
         experiment_freq_labels.append(experiment_freq_label)
-        entry = tk.Entry(root)
+        entry = tk.Entry(framei)
         entry.pack()
         experiment_freq_entries.append(entry)
 
+frames = []
 experiment_labels = []
 experiment_time_labels = []
 experiment_b_labels = []
@@ -105,10 +117,10 @@ experiment_running.set(0)
 experiment_aborted = tk.BooleanVar()
 experiment_aborted.set(0)
 
-abort_button = tk.Button(root, text="Abort", command=abort_button_click)
+abort_button = tk.Button(frame1, text="Abort", command=abort_button_click)
 abort_button.pack(side="bottom", fill="x")
 
-start_button = tk.Button(root, text="Start", command=start_button_click)
+start_button = tk.Button(frame1, text="Start", command=start_button_click)
 start_button.pack(side="bottom", fill="x")
 
 root.mainloop()
