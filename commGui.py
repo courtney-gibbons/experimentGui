@@ -1,4 +1,8 @@
 import tkinter as tk
+from serial import Serial
+
+ser = Serial('/dev/cu.usbserial-10', 9600)  # 'COM9'
+# insert port number
 
 def start_button_click():
     experiment_running.set(1)
@@ -10,6 +14,8 @@ def start_button_click():
         experiment_times[i] = int(experiment_time_entries[i].get())
         experiment_bs[i] = int(experiment_b_entries[i].get())
         experiment_freqs[i] = int(experiment_freq_entries[i].get())
+    message = "start, " + num_experiments + ", " + experiment_times + ", " + experiment_bs + ", " + experiment_freqs
+    ser.write(message.encode())
     print("Start Experiments")
     print("Number of Experiments:", num_experiments)
     print("Experiment Times:", experiment_times)
@@ -18,6 +24,8 @@ def start_button_click():
 
 def abort_button_click():
     experiment_aborted.set(1)
+    message = "abort"
+    ser.write(message.encode())
     print("Abort Experiments")
 
 root = tk.Tk()
